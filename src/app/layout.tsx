@@ -1,8 +1,23 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { ReactNode } from "react";
+import { JetBrains_Mono, Manrope } from "next/font/google";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"]
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "600", "700"]
+});
 
 export const metadata: Metadata = {
   title: "English Roadmap | 3-Month Work Communication",
@@ -21,7 +36,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+      <body
+        className={`${manrope.variable} ${jetBrainsMono.variable} min-h-screen bg-background font-sans text-foreground antialiased`}
+      >
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
