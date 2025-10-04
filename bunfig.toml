@@ -1,0 +1,11 @@
+[install]
+peer = true
+optional = true
+saveTextLockfile = true
+
+disable = ["node-gyp"]
+
+[run]
+jsx = "automatic"
+
+test = "vitest"
