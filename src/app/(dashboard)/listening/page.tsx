@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { ListeningExerciseCard } from "@/components/molecules/ListeningExerciseCard";
 import { MetricTile } from "@/components/molecules/MetricTile";
+import type { MetricTileProps } from "@/components/molecules/MetricTile";
 import { ListeningSwipeDeck } from "@/components/organisms/ListeningSwipeDeck";
 import { useDailyPlan } from "@/features/dashboard/hooks/useDailyPlan";
 import { useListeningShowcase } from "@/features/listening/hooks/useListeningShowcase";
@@ -52,7 +53,7 @@ export default function ListeningPage() {
     toggleTask(activeDay.id, listeningItem.id, firstTask.id, true).catch(() => undefined);
   };
 
-  const summaryTiles = [
+  const summaryTiles: MetricTileProps[] = [
     {
       title: `Listening Day ${activeSequence}`,
       value: `${completed}/${Math.max(deckEntries.length, 1)}`,
@@ -130,3 +131,4 @@ export default function ListeningPage() {
     </div>
   );
 }
+

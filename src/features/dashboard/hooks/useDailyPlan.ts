@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { mockDailyPlan } from "@/features/dashboard/data/sample";
-import type { DailyPlanDay, DailyPlanItem } from "@/features/dashboard/types";
+import type { DailyPlanDay } from "@/features/dashboard/types";
 
 interface UseDailyPlanResult {
   days: DailyPlanDay[];
@@ -154,3 +154,4 @@ export function useDailyPlan(): UseDailyPlanResult {
     dayCompletion
   };
 }
+

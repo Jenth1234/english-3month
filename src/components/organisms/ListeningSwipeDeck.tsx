@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -45,10 +45,10 @@ export function ListeningSwipeDeck({
   const completedCount = state.completedIds.size;
   const deckDone = completedCount === total && total > 0;
 
-  // 🪵 Log mỗi lần render
-  console.log("📍 STATE:", state);
-  console.log("📍 currentExercise:", currentExercise);
-  console.log("📍 total:", total, "completedCount:", completedCount);
+  // ðŸªµ Log má»—i láº§n render
+  console.log("ðŸ“ STATE:", state);
+  console.log("ðŸ“ currentExercise:", currentExercise);
+  console.log("ðŸ“ total:", total, "completedCount:", completedCount);
 
   useEffect(() => {
     setState(initialState);
@@ -72,7 +72,7 @@ export function ListeningSwipeDeck({
       freshAnswers[q.id] = null;
     });
 
-    console.log("🆕 Reset answers for new exercise:", freshAnswers);
+    console.log("ðŸ†• Reset answers for new exercise:", freshAnswers);
 
     setState((prev) => ({
       ...prev,
@@ -92,7 +92,7 @@ export function ListeningSwipeDeck({
     if (!currentExercise) return null;
 
     if (currentExercise.mediaType === "video" && currentExercise.youTubeId) {
-  const params = "?controls=1&modestbranding=1&rel=0";
+      const params = "?controls=1&modestbranding=1&rel=0";
 
       return (
         <div className="space-y-3">
@@ -113,14 +113,33 @@ export function ListeningSwipeDeck({
     }
 
     if (currentExercise.mediaUrl) {
+      const transcript = currentExercise.transcript?.trim();
+      const transcriptId = transcript ? `listening-transcript-${currentExercise.id}` : undefined;
+      const captionText = transcript ?? 'Transcript not yet available.';
+      const captionSource = `data:text/vtt;charset=utf-8,${encodeURIComponent(`WEBVTT\n\n1\n00:00:00.000 --> 00:10:00.000\n${captionText}`)}`;
+
       return (
         <div className="space-y-3">
-          <audio controls className="w-full">
+          <audio
+            controls
+            className="w-full"
+            aria-label={`${currentExercise.title} audio lesson`}
+            aria-describedby={transcriptId}
+          >
             <source src={currentExercise.mediaUrl} />
+            <track kind="captions" srcLang="en" label="Transcript" src={captionSource} default />
           </audio>
           <p className="text-xs text-muted-foreground">
             Nghe het audio truoc khi lam quiz.
           </p>
+          {transcript ? (
+            <details className="rounded-md bg-muted/30 p-3 text-sm text-muted-foreground">
+              <summary className="cursor-pointer text-foreground">Xem transcript</summary>
+              <p id={transcriptId} className="mt-2 whitespace-pre-wrap">
+                {transcript}
+              </p>
+            </details>
+          ) : null}
         </div>
       );
     }
@@ -142,8 +161,8 @@ export function ListeningSwipeDeck({
 
   const goToNextExercise = useCallback(
     (updatedCompleted: Set<string>) => {
-      console.log("➡️ Going to next exercise...");
-      console.log("✅ Completed IDs:", Array.from(updatedCompleted));
+      console.log("âž¡ï¸ Going to next exercise...");
+      console.log("âœ… Completed IDs:", Array.from(updatedCompleted));
 
       if (updatedCompleted.size === total) {
         setState((prev) => ({
@@ -163,7 +182,7 @@ export function ListeningSwipeDeck({
       );
       const resolvedIndex = nextIndex !== -1 ? nextIndex : fallbackIndex !== -1 ? fallbackIndex : state.index;
 
-      console.log("➡️ Next index:", resolvedIndex);
+      console.log("âž¡ï¸ Next index:", resolvedIndex);
 
       setState((prev) => ({
         index: resolvedIndex,
@@ -177,9 +196,9 @@ export function ListeningSwipeDeck({
   );
 
   const handleSubmitQuiz = useCallback(() => {
-    console.log("📤 Submitting quiz...");
-    console.log("🧠 Answers:", state.answers);
-    console.log("✅ allAnswered:", allAnswered, "✅ allCorrect:", allCorrect);
+    console.log("ðŸ“¤ Submitting quiz...");
+    console.log("ðŸ§  Answers:", state.answers);
+    console.log("âœ… allAnswered:", allAnswered, "âœ… allCorrect:", allCorrect);
 
     if (!currentExercise) return;
 
@@ -198,12 +217,12 @@ export function ListeningSwipeDeck({
   }, [allAnswered, allCorrect, currentExercise, goToNextExercise, state.answers, state.completedIds]);
 
   const handleBeginQuiz = useCallback(() => {
-    console.log("▶️ Begin quiz");
+    console.log("â–¶ï¸ Begin quiz");
     setState((prev) => ({ ...prev, phase: "quiz", error: null }));
   }, []);
 
   const handleSelectAnswer = useCallback((questionId: string, optionIndex: number) => {
-    console.log(`✏️ Answer selected for ${questionId}:`, optionIndex);
+    console.log(`âœï¸ Answer selected for ${questionId}:`, optionIndex);
     setState((prev) => ({
       ...prev,
       answers: { ...prev.answers, [questionId]: optionIndex },
@@ -212,7 +231,7 @@ export function ListeningSwipeDeck({
   }, []);
 
   const handleRestart = useCallback(() => {
-    console.log("🔄 Restart deck");
+    console.log("ðŸ”„ Restart deck");
     setState(initialState);
   }, []);
 
@@ -332,3 +351,4 @@ export function ListeningSwipeDeck({
     </div>
   );
 }
+

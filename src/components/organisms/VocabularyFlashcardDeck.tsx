@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -35,6 +35,7 @@ const initialState: DeckState = {
 
 export function VocabularyFlashcardDeck({ entries, onDeckComplete, onProgressChange, title }: VocabularyFlashcardDeckProps) {
   const [state, setState] = useState<DeckState>(initialState);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setState(initialState);
@@ -48,6 +49,12 @@ export function VocabularyFlashcardDeck({ entries, onDeckComplete, onProgressCha
   useEffect(() => {
     onProgressChange?.(completedCount, total);
   }, [completedCount, total, onProgressChange]);
+
+  useEffect(() => {
+    if (state.phase === "input") {
+      inputRef.current?.focus();
+    }
+  }, [state.phase]);
 
   useEffect(() => {
     if (deckDone) {
@@ -212,12 +219,12 @@ export function VocabularyFlashcardDeck({ entries, onDeckComplete, onProgressCha
                       {state.phase === "input" ? (
                         <div className="w-full space-y-2">
                           <Input
+                            ref={inputRef}
                             value={state.answer}
                             onChange={(event) =>
                               setState((prev) => ({ ...prev, answer: event.target.value, error: null }))
                             }
                             placeholder="Nhập lại từ tiếng Anh"
-                            autoFocus
                           />
                           {state.error ? (
                             <p className="text-xs text-destructive">{state.error}</p>
@@ -265,3 +272,4 @@ export function VocabularyFlashcardDeck({ entries, onDeckComplete, onProgressCha
     </div>
   );
 }
+

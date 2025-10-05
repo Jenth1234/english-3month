@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
@@ -9,7 +9,7 @@ import { getFirestoreClient } from "@/lib/firebase/client";
 
 export interface UseFirestoreCollectionOptions<T> {
   path: string;
-  schema: z.ZodType<T>;
+  schema: z.ZodType<T, z.ZodTypeDef, unknown>;
   listen?: boolean;
 }
 
@@ -83,3 +83,4 @@ export function useFirestoreCollection<T>({
 
   return { data, loading, error };
 }
+

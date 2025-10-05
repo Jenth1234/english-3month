@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SectionHeading } from "@/components/atoms/SectionHeading";
 import { VocabularyCard } from "@/components/molecules/VocabularyCard";
 import { MetricTile } from "@/components/molecules/MetricTile";
+import type { MetricTileProps } from "@/components/molecules/MetricTile";
 import { VocabularyFlashcardDeck } from "@/components/organisms/VocabularyFlashcardDeck";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,7 @@ import {
 } from "@/features/vocabulary/hooks/useVocabularyShowcase";
 
 const FILTER_LABELS: Record<VocabularyProficiencyFilter, string> = {
-  all: "Tất cả",
+  all: "T?t c?",
   foundation: "Phase 1",
   practice: "Phase 2",
   "work-ready": "Phase 3"
@@ -43,8 +44,7 @@ export default function VocabularyPage() {
     filter,
     setFilter,
     search,
-    setSearch,
-    stats
+    setSearch
   } = useVocabularyShowcase({
     activeDay: activeSequence,
     previewDay: nextUnlockedDay ? nextUnlockedDay.sequence : null,
@@ -86,29 +86,29 @@ export default function VocabularyPage() {
   );
 
   const deckTotal = deckEntries.length;
-  const summaryTiles = [
+  const summaryTiles: MetricTileProps[] = [
     {
       title: `Flashcard Day ${activeSequence}`,
       value: `${completedFlashcards}/${Math.max(deckTotal, 1)}`,
-      description: "Tiến độ bộ thẻ",
+      description: "Ti?n d? b? th?",
       status: deckTotal > 0 && completedFlashcards >= deckTotal ? "success" : "warning"
     },
     {
-      title: "Từ mới hôm nay",
+      title: "T? m?i hôm nay",
       value: todayNewEntries.length,
-      description: "Giới hạn 20 từ",
+      description: "Gi?i h?n 20 t?",
       status: todayNewEntries.length >= 20 ? "success" : "warning"
     },
     {
-      title: "Ôn từ cũ",
+      title: "Ôn t? cu",
       value: todayReviewEntries.length,
-      description: "Lấy ngẫu nhiên từ ngày trước",
+      description: "L?y ng?u nhiên t? ngày tru?c",
       status: todayReviewEntries.length ? "success" : "neutral"
     },
     {
-      title: nextUnlockedDay ? `Ôn trước Day ${nextUnlockedDay.sequence}` : "Ôn trước",
-      value: `${previewEntries.length} từ`,
-      description: nextUnlockedDay ? nextUnlockedDay.label : "Không có ngày tiếp theo",
+      title: nextUnlockedDay ? `Ôn tru?c Day ${nextUnlockedDay.sequence}` : "Ôn tru?c",
+      value: `${previewEntries.length} t?`,
+      description: nextUnlockedDay ? nextUnlockedDay.label : "Không có ngày ti?p theo",
       status: "neutral" as const
     }
   ];
@@ -118,7 +118,7 @@ export default function VocabularyPage() {
       <SectionHeading
         eyebrow="Vocabulary Toolkit"
         title="Flashcard song hành daily sprint"
-        description="20 từ mới của ngày hiện tại và 10 từ đã học để ôn lại, chuẩn bị cho bước kế tiếp." />
+        description="20 t? m?i c?a ngày hi?n t?i và 10 t? dã h?c d? ôn l?i, chu?n b? cho bu?c k? ti?p." />
 
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {summaryTiles.map((tile) => (
@@ -142,7 +142,7 @@ export default function VocabularyPage() {
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Tìm theo từ, nghĩa hoặc tag"
+            placeholder="Tìm theo t?, nghia ho?c tag"
             className="w-64"
           />
         </div>
@@ -154,21 +154,21 @@ export default function VocabularyPage() {
           <SectionHeading
             eyebrow={`Day ${activeSequence}`}
             title="Flashcard hôm nay"
-            description={activeDay?.label ?? "Danh sách từ vựng cho sprint hôm nay."}
+            description={activeDay?.label ?? "Danh sách t? v?ng cho sprint hôm nay."}
           />
           <VocabularyFlashcardDeck
             entries={deckEntries}
             onDeckComplete={handleDeckComplete}
             onProgressChange={handleDeckProgress}
-            title="Quẹt để ôn từng từ"
+            title="Qu?t d? ôn t?ng t?"
           />
         </div>
 
         <div className="space-y-3">
           <SectionHeading
-            eyebrow="Ôn từ đã học"
-            title="10 từ cũ được chọn ngẫu nhiên"
-            description="Củng cố trí nhớ trước khi sang tình huống mới."
+            eyebrow="Ôn t? dã h?c"
+            title="10 t? cu du?c ch?n ng?u nhiên"
+            description="C?ng c? trí nh? tru?c khi sang tình hu?ng m?i."
           />
           {todayReviewEntries.length ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -178,7 +178,7 @@ export default function VocabularyPage() {
             </div>
           ) : (
             <div className="rounded-lg border border-dashed border-border bg-card p-6 text-center text-muted-foreground">
-              Chưa có từ cần ôn lại cho ngày này.
+              Chua có t? c?n ôn l?i cho ngày này.
             </div>
           )}
         </div>
@@ -188,10 +188,10 @@ export default function VocabularyPage() {
             eyebrow={nextUnlockedDay ? `Preview Day ${nextUnlockedDay.sequence}` : "Preview"}
             title={
               nextUnlockedDay
-                ? `Ôn trước 10 từ cho ${nextUnlockedDay.label}`
-                : "Chưa có ngày tiếp theo"
+                ? `Ôn tru?c 10 t? cho ${nextUnlockedDay.label}`
+                : "Chua có ngày ti?p theo"
             }
-            description="Chuẩn bị trước để ngày mai phản xạ nhanh hơn."
+            description="Chu?n b? tru?c d? ngày mai ph?n x? nhanh hon."
           />
           {previewEntries.length ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -201,7 +201,7 @@ export default function VocabularyPage() {
             </div>
           ) : (
             <div className="rounded-lg border border-dashed border-border bg-card p-8 text-center text-muted-foreground">
-              Không có từ vựng nào để ôn trước cho ngày tiếp theo.
+              Không có t? v?ng nào d? ôn tru?c cho ngày ti?p theo.
             </div>
           )}
         </div>
@@ -209,3 +209,4 @@ export default function VocabularyPage() {
     </div>
   );
 }
+

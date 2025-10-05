@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
+﻿import { ReactNode } from "react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusDot } from "@/components/atoms/StatusDot";
 
-interface MetricTileProps {
+export interface MetricTileProps {
   title: string;
   value: ReactNode;
   description?: string;
@@ -26,3 +26,4 @@ export function MetricTile({ title, value, description, status }: MetricTileProp
     </Card>
   );
 }
+
